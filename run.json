@@ -1,0 +1,8 @@
+{
+  "title": "Mushroom Kingdom Side-Scroller — Anthropic Sonnet 4.7",
+  "url": "",
+  "harness": "Claude Code",
+  "model": "Anthropic Sonnet 4.7",
+  "thumbnail": "thumbnails/mario-claude-sonnet-cc.png",
+  "notes": "Using superpowers"
+}
