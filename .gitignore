@@ -3,3 +3,10 @@ dist/
 .vite/
 *.local
 .DS_Store
+
+# Kenney source pack — copied assets live in public/assets/
+kenney_new-platformer-pack-1.1/
+
+# Local artifacts
+logs/
+run.json
