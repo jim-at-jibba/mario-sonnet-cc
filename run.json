@@ -1,6 +1,6 @@
 {
   "title": "Mushroom Kingdom Side-Scroller — Anthropic Sonnet 4.7",
-  "url": "",
+  "url": "https://mario-sonnet-cc.netlify.app/",
   "harness": "Claude Code",
   "model": "Anthropic Sonnet 4.7",
   "thumbnail": "thumbnails/mario-claude-sonnet-cc.png",
