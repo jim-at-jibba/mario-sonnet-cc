@@ -6,11 +6,11 @@ export class Boot extends Phaser.Scene {
   }
 
   preload() {
-    // Spritesheets (Starling/Sparrow XML format — supported natively in Phaser 3.60+)
-    this.load.atlas('tiles',       'assets/spritesheet-tiles-default.png',       'assets/spritesheet-tiles-default.xml');
-    this.load.atlas('characters',  'assets/spritesheet-characters-default.png',  'assets/spritesheet-characters-default.xml');
-    this.load.atlas('enemies',     'assets/spritesheet-enemies-default.png',     'assets/spritesheet-enemies-default.xml');
-    this.load.atlas('backgrounds', 'assets/spritesheet-backgrounds-default.png', 'assets/spritesheet-backgrounds-default.xml');
+    // Spritesheets — Kenney ships Starling/Sparrow XML atlases; load via atlasXML
+    this.load.atlasXML('tiles',       'assets/spritesheet-tiles-default.png',       'assets/spritesheet-tiles-default.xml');
+    this.load.atlasXML('characters',  'assets/spritesheet-characters-default.png',  'assets/spritesheet-characters-default.xml');
+    this.load.atlasXML('enemies',     'assets/spritesheet-enemies-default.png',     'assets/spritesheet-enemies-default.xml');
+    this.load.atlasXML('backgrounds', 'assets/spritesheet-backgrounds-default.png', 'assets/spritesheet-backgrounds-default.xml');
 
     // Audio
     this.load.audio('sfx_jump',       'assets/sounds/sfx_jump.ogg');

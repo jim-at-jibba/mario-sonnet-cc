@@ -14,13 +14,14 @@ export class Game extends Phaser.Scene {
     super({ key: 'Game' });
   }
 
-  create() {
+  create(data = {}) {
     this.physics.world.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 
-    // Game state
-    this.score    = 0;
-    this.coins    = 0;
-    this.lives    = 3;
+    // Game state — score/coins/lives carry across a respawn (passed via
+    // scene.restart data). A fresh start (Play Again) passes none → defaults.
+    this.score    = data.score ?? 0;
+    this.coins    = data.coins ?? 0;
+    this.lives    = data.lives ?? 3;
     this.timeLeft = LEVEL_TIME_START;
     this._timerAccum = 0;
     this._muted = false;
@@ -140,20 +141,20 @@ export class Game extends Phaser.Scene {
       'tiles', 'sign_exit'
     ).setDepth(1);
 
-    // Animated flag above sign
+    // Animated flag above sign — alternate frame on a timed loop
     this.flag = this.add.sprite(
       endCol * TILE_SIZE + TILE_SIZE / 2,
       GROUND_ROW * TILE_SIZE - TILE_SIZE * 1.5,
       'tiles', 'flag_green_a'
     );
-    this.tweens.add({
-      targets: this.flag,
-      frame: { from: 0, to: 1 },
-      duration: 400,
-      repeat: -1,
-      yoyo: true,
-      onYoyo: () => this.flag.setTexture('tiles', 'flag_green_b'),
-      onRepeat: () => this.flag.setTexture('tiles', 'flag_green_a'),
+    this._flagFrameA = true;
+    this.time.addEvent({
+      delay: 400,
+      loop: true,
+      callback: () => {
+        this._flagFrameA = !this._flagFrameA;
+        this.flag.setTexture('tiles', this._flagFrameA ? 'flag_green_a' : 'flag_green_b');
+      },
     });
   }
 
@@ -246,8 +247,9 @@ export class Game extends Phaser.Scene {
 
   _onPlayerHitBlock(player, block) {
     if (block.getData('hit')) return;
-    // Only trigger when player hits from below
-    if (player.body.velocity.y >= 0) return;
+    // Only trigger on a head-bump from below. Arcade zeroes velocity during
+    // separation (before this callback), so check blocked.up, not velocity.
+    if (!player.body.blocked.up) return;
     if (player.y < block.y) return; // player above block, skip
 
     block.setData('hit', true);
@@ -380,7 +382,7 @@ export class Game extends Phaser.Scene {
         this.scene.stop('HUD');
         this.scene.start('GameOver', { score: this.score });
       } else {
-        this.scene.restart();
+        this.scene.restart({ lives: this.lives, score: this.score, coins: this.coins });
       }
     });
   }

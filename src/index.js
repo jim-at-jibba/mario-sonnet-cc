@@ -21,4 +21,9 @@ const config = {
   scene: [Boot, Game, HUD, GameOver, LevelClear],
 };
 
-new Phaser.Game(config);
+const game = new Phaser.Game(config);
+
+// Dev-only debug handle (stripped from production builds by Vite).
+if (import.meta.env.DEV) {
+  window.__game = game;
+}
